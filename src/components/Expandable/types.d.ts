@@ -1,9 +1,5 @@
 export type ClassName = string | ''
 
-interface IPropClassName {
+interface IClassNameAttribute {
     className?: ClassName
-}
-
-interface IPropChildren {
-    children?: any
 }
