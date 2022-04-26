@@ -1,9 +1,9 @@
-import {useContext} from "react";
+import React, {useContext} from "react";
 import {ExpandableContext} from "./Expandable";
-import {IPropChildren, IPropClassName} from "./types";
+import {IClassNameAttribute} from "./types";
 import './Icon.styles.css';
 
-interface IIconProps extends IPropClassName, IPropChildren {}
+interface IIconProps extends IClassNameAttribute, React.HTMLAttributes<HTMLSpanElement> {}
 
 const Icon = ({ children, className = '', ...props }: IIconProps) => {
     const { expanded } = useContext(ExpandableContext);

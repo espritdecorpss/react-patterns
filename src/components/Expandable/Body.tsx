@@ -1,9 +1,9 @@
-import {useContext} from "react";
+import React, {useContext} from "react";
 import {ExpandableContext} from "./Expandable";
-import {IPropChildren, IPropClassName} from "./types";
+import {IClassNameAttribute} from "./types";
 import './Body.styles.css';
 
-interface IBodyProps extends IPropClassName, IPropChildren {}
+interface IBodyProps extends IClassNameAttribute, React.HTMLAttributes<HTMLDivElement> {}
 
 const Body = ({ children, className = '', ...props }: IBodyProps) => {
     const { expanded } = useContext(ExpandableContext);

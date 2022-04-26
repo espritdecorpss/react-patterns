@@ -1,11 +1,11 @@
-import {createContext, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {IPropChildren, IPropClassName} from "./types";
+import React, {createContext, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {IClassNameAttribute} from "./types";
 import Header from "./Header";
 import Icon from "./Icon";
 import Body from "./Body";
 import './Expandable.styles.css';
 
-interface IExpandableProps extends IPropClassName, IPropChildren {
+interface IExpandableProps extends IClassNameAttribute, React.HTMLAttributes<HTMLDivElement> {
     onExpand?: (expanded: boolean) => void
 }
 

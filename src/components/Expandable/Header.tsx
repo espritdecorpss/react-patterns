@@ -1,9 +1,9 @@
-import {useContext} from "react";
+import React, {useContext} from "react";
 import {ExpandableContext} from "./Expandable";
-import {IPropChildren, IPropClassName} from "./types";
+import {IClassNameAttribute} from "./types";
 import './Header.styles.css';
 
-interface IHeaderProps extends IPropClassName, IPropChildren {}
+interface IHeaderProps extends IClassNameAttribute, React.HTMLAttributes<HTMLButtonElement> {}
 
 const Header = ({ children, className = '', ...props }: IHeaderProps) => {
     const { toggle } = useContext(ExpandableContext);
