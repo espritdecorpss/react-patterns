@@ -7,11 +7,12 @@ import './Expandable.styles.css';
 
 interface IExpandableProps extends IClassNameAttribute, React.HTMLAttributes<HTMLDivElement> {
     onExpand?: (expanded: boolean) => void
+    expand?: boolean
 }
 
 interface IExpandableContext {
     expanded: boolean
-    toggle: () => void
+    toggle: (...params: any[]) => void
 }
 
 export const ExpandableContext = createContext<IExpandableContext>({
@@ -22,21 +23,50 @@ export const ExpandableContext = createContext<IExpandableContext>({
 });
 const { Provider } = ExpandableContext;
 
-const Expandable = ({ children, onExpand, className = '', ...props }: IExpandableProps) => {
+const Expandable = (
+    {
+        expand: externalExpanded, onExpand, // | - Defined props
+        children, className = '', ...props  // | - Inherited props
+    }
+    : IExpandableProps) => {
+
+    //Follow the start of the component lifecycle
     const componentJustMounted = useRef(true);
+    //Determine a behaviour for the component
+    const isExpandControlled = externalExpanded !== undefined;
 
-    const [expanded, setExpanded] = useState(false);
-    const toggle = useCallback(() => setExpanded(prevState => !prevState), []);
+    // | Main state |
+    //-|------------|--
+    const [internalExpanded, setInternalExpanded] = useState(false);
+    const toggle = useCallback(() => setInternalExpanded(prevState => !prevState), []);
+    //-|------------|--
 
+    //If the component just mounted then skip the hook iteration
     useEffect(() => {
-        if (!onExpand) return;
-
-        if (!componentJustMounted.current) {
-            onExpand(expanded);
+        if (!componentJustMounted.current && !isExpandControlled) {
+            onExpand?.(internalExpanded);
+            componentJustMounted.current = false;
         }
-    }, [expanded]);
+    }, [internalExpanded, externalExpanded, onExpand]);
 
-    const value = useMemo(() => ({ expanded, toggle }), [expanded, toggle]);
+
+    //Responsible state for the component
+    const getExpanded = isExpandControlled ?
+        (externalExpanded ? internalExpanded : externalExpanded)
+        : internalExpanded;
+
+    //Responsible function for state management
+    const getToggleExpand = isExpandControlled ?
+        (onExpand ? onExpand : toggle)
+        : toggle;
+
+
+    //Implement value of the context
+    const value = useMemo(() =>
+            ({ expanded: getExpanded, toggle: getToggleExpand }),
+        [getExpanded, getToggleExpand]
+    );
+    //Combine passed style classes with the internal style class
     const combinedClassName = ['Expandable', className].join('');
 
     return (
