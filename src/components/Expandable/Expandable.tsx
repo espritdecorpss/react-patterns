@@ -1,5 +1,5 @@
-import React, {createContext, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {IClassNameAttribute} from "./types";
+import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { IClassNameAttribute } from "./types";
 import Header from "./Header";
 import Icon from "./Icon";
 import Body from "./Body";
@@ -54,9 +54,9 @@ const Expandable = (
         //If the component is just mounted and isn't controlled then skip the hook iteration
         if (!componentJustMounted.current && !isExpandControlled) {
             externalOnExpand?.(internalExpand);
-            componentJustMounted.current = false;
         }
-    }, [internalExpand, externalExpand, externalOnExpand]);
+        componentJustMounted.current = false;
+    }, [internalExpand, externalExpand, externalOnExpand, isExpandControlled]);
 
 
     //Responsible state for the component
