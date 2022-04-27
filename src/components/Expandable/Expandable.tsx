@@ -58,17 +58,22 @@ const Expandable = (
         componentJustMounted.current = false;
     }, [internalExpand, externalExpand, externalOnExpand, isExpandControlled]);
 
+    const getSource: GetControlledSource = ({ internal, external }) => {
+        if (isExpandControlled && external !== undefined) return external;
+        return internal;
+    };
 
-    //Responsible state for the component
-    const getExpanded = isExpandControlled ?
-        (externalExpanded ? internalExpanded : externalExpanded)
-        : internalExpanded;
+    //Managed state of the component
+    const expand = getSource<Expand>({
+        internal: internalExpand,
+        external: externalExpand
+    });
 
     //Responsible function for state management
-    const getToggleExpand = isExpandControlled ?
-        (onExpand ? onExpand : toggle)
-        : toggle;
-
+    const onExpand = getSource<ExpandCallback>({
+        internal: internalOnExpand,
+        external: externalOnExpand
+    });
 
     //Implement value of the context
     const value = useMemo(() => ({ expand, onExpand }), [expand, onExpand]);
