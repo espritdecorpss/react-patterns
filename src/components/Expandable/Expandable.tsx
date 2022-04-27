@@ -32,10 +32,10 @@ const { Provider } = ExpandableContext;
 
 const Expandable = (
     {
-        expand: externalExpand,             // |-- Defined props
-        onExpand: externalOnExpand,         // |
-                                            // |
-        children, className = '', ...props  // |-- Inherited props
+        expand: externalExpand,                 //  . Defined props
+        onExpand: externalOnExpand,             //  |
+                                                // _|
+        children, className = '', ...props      //  . Inherited props
     }: IExpandableProps) => {
 
     //Follow the start of the component lifecycle
@@ -43,13 +43,13 @@ const Expandable = (
     //Determine a behaviour for the component
     const isExpandControlled = (externalExpand !== undefined);
 
-    // Expand state |
-    //--------------|--
+    //  Expand state  |
+    //----------------|--
     const [internalExpand, setInternalExpand] = useState<Expand>(false);
     const internalOnExpand = useCallback(() => setInternalExpand(prevState => !prevState), []);
-    //--------------|--
+    //----------------|--
 
-    //If the component just mounted then skip the hook iteration
+    //Effect to apply externalOnExpand() when internal state changed
     useEffect(() => {
         //If the component is just mounted and isn't controlled then skip the hook iteration
         if (!componentJustMounted.current && !isExpandControlled) {
