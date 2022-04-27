@@ -1,5 +1,5 @@
 export type ClassName = string | ''
 
-interface IClassNameAttribute {
+export interface IClassNameAttribute {
     className?: ClassName
 }

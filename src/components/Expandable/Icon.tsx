@@ -6,12 +6,12 @@ import './Icon.styles.css';
 interface IIconProps extends IClassNameAttribute, React.HTMLAttributes<HTMLSpanElement> {}
 
 const Icon = ({ children, className = '', ...props }: IIconProps) => {
-    const { expanded } = useContext(ExpandableContext);
+    const { expand } = useContext(ExpandableContext);
     const combinedClassName = ['Expandable-icon', className].join('');
 
     return (
         <span className={combinedClassName} {...props}>
-            {expanded ? '-' : '+'}
+            {expand ? '-' : '+'}
         </span>
     );
 };

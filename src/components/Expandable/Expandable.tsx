@@ -6,18 +6,18 @@ import Body from "./Body";
 import './Expandable.styles.css';
 
 interface IExpandableProps extends IClassNameAttribute, React.HTMLAttributes<HTMLDivElement> {
-    onExpand?: (expanded: boolean) => void
-    expand?: boolean
+    expand?: Expand
+    onExpand?: ExpandCallback
 }
 
 interface IExpandableContext {
-    expanded: boolean
-    toggle: (...params: any[]) => void
+    expand: Expand
+    onExpand: ExpandCallback
 }
 
 export const ExpandableContext = createContext<IExpandableContext>({
-    expanded: false,
-    toggle: () => {
+    expand: false,
+    onExpand: () => {
         throw new Error("toggle() in ExpandableContext isn't implemented");
     }
 });
@@ -25,29 +25,31 @@ const { Provider } = ExpandableContext;
 
 const Expandable = (
     {
-        expand: externalExpanded, onExpand, // | - Defined props
-        children, className = '', ...props  // | - Inherited props
-    }
-    : IExpandableProps) => {
+        expand: externalExpand,             // |-- Defined props
+        onExpand: externalOnExpand,         // |
+                                            // |
+        children, className = '', ...props  // |-- Inherited props
+    }: IExpandableProps) => {
 
     //Follow the start of the component lifecycle
     const componentJustMounted = useRef(true);
     //Determine a behaviour for the component
-    const isExpandControlled = externalExpanded !== undefined;
+    const isExpandControlled = (externalExpand !== undefined);
 
-    // | Main state |
-    //-|------------|--
-    const [internalExpanded, setInternalExpanded] = useState(false);
-    const toggle = useCallback(() => setInternalExpanded(prevState => !prevState), []);
-    //-|------------|--
+    // Expand state |
+    //--------------|--
+    const [internalExpand, setInternalExpand] = useState<Expand>(false);
+    const internalOnExpand = useCallback(() => setInternalExpand(prevState => !prevState), []);
+    //--------------|--
 
     //If the component just mounted then skip the hook iteration
     useEffect(() => {
+        //If the component is just mounted and isn't controlled then skip the hook iteration
         if (!componentJustMounted.current && !isExpandControlled) {
-            onExpand?.(internalExpanded);
+            externalOnExpand?.(internalExpand);
             componentJustMounted.current = false;
         }
-    }, [internalExpanded, externalExpanded, onExpand]);
+    }, [internalExpand, externalExpand, externalOnExpand]);
 
 
     //Responsible state for the component
@@ -62,10 +64,7 @@ const Expandable = (
 
 
     //Implement value of the context
-    const value = useMemo(() =>
-            ({ expanded: getExpanded, toggle: getToggleExpand }),
-        [getExpanded, getToggleExpand]
-    );
+    const value = useMemo(() => ({ expand, onExpand }), [expand, onExpand]);
     //Combine passed style classes with the internal style class
     const combinedClassName = ['Expandable', className].join('');
 

@@ -6,14 +6,14 @@ import './Header.styles.css';
 interface IHeaderProps extends IClassNameAttribute, React.HTMLAttributes<HTMLButtonElement> {}
 
 const Header = ({ children, className = '', ...props }: IHeaderProps) => {
-    const { toggle } = useContext(ExpandableContext);
+    const { onExpand } = useContext(ExpandableContext);
 
     const combinedClassName = ['Expandable-trigger', className].join('');
 
     return (
         <button
             className={combinedClassName}
-            onClick={toggle}
+            onClick={onExpand}
             {...props}
         >
             {children}
