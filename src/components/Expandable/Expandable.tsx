@@ -5,6 +5,13 @@ import Icon from "./Icon";
 import Body from "./Body";
 import './Expandable.styles.css';
 
+type Expand = boolean
+type ExpandCallback = (...params: any[]) => void
+
+type Source = Expand | ExpandCallback
+type AvailableControlSources<Type extends Source> = { internal: Type, external?: Type }
+type GetControlledSource = <Type extends Source>(sources: AvailableControlSources<Type>) => Type
+
 interface IExpandableProps extends IClassNameAttribute, React.HTMLAttributes<HTMLDivElement> {
     expand?: Expand
     onExpand?: ExpandCallback
