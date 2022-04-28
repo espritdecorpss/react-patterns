@@ -51,10 +51,26 @@ const ControlledCompoundComponent = () => {
     );
 };
 
+const Example = () => {
+    const {expand, toggle} = useExpand();
+    useEffectAfterMount(() => console.log('ebat'), [expand]);
+    return (
+        <div style={{ marginTop: '3rem' }}>
+            <button onClick={toggle}>
+                Click
+            </button>
+            {expand ? (
+                <p>{'😎'.repeat(50)}</p>
+            ) : null}
+        </div>
+    )
+}
+
 function App () {
     return (
         <div className="App">
-            <ControlledCompoundComponent />
+            {/*<ControlledCompoundComponent />*/}
+            <Example />
         </div>
     );
 }
