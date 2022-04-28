@@ -30,12 +30,12 @@ export const ExpandableContext = createContext<IExpandableContext>({
 });
 const { Provider } = ExpandableContext;
 
-const Expandable = (
+export const Expandable = (
     {
-        expand: externalExpand,                 //  . Defined props
-        onExpand: externalOnExpand,             //  |
-                                                // _|
-        children, className = '', ...props      //  . Inherited props
+        expand: externalExpand,             //  . Defined props
+        onExpand: externalOnExpand,         //  |
+                                            // _!
+        children, className = '', ...props  //  . Inherited props
     }: IExpandableProps) => {
 
     //Follow the start of the component lifecycle
@@ -43,11 +43,11 @@ const Expandable = (
     //Determine a behaviour for the component
     const isExpandControlled = (externalExpand !== undefined);
 
-    //  Expand state  |
-    //----------------|--
+    //=|----------------|=-
+    // |  Expand state  |
     const [internalExpand, setInternalExpand] = useState<Expand>(false);
     const internalOnExpand = useCallback(() => setInternalExpand(prevState => !prevState), []);
-    //----------------|--
+    //=|----------------|=-
 
     //Effect to apply externalOnExpand() when internal state changed
     useEffect(() => {
