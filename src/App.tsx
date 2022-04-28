@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import Expandable from "./components/Expandable";
+import {Expandable} from "./components/Expandable";
 import './App.styles.css';
 import useExpand from "./hooks/useExpand";
 import useEffectAfterMount from "./hooks/useEffectAfterMount";
