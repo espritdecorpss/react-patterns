@@ -92,5 +92,3 @@ export const Expandable = (
 Expandable.Header = Header;
 Expandable.Icon = Icon;
 Expandable.Body = Body;
-
-export default Expandable;
